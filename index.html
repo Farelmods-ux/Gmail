@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Akun Google - Replika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS diletakkan di sini untuk kemudahan */
+        body {
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
+            background-color: #121212; /* Dark Mode Background */
+            color: #e8eaed; /* Light Text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #202124; /* Dark Mode Card Background */
+            padding: 40px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .google-logo {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #9aa0a6;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .input-group, .date-group, .select-group {
+            margin-bottom: 24px;
+        }
+
+        .name-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .input-field {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        input[type="text"], input[type="password"], input[type="number"], .custom-select, .date-input {
+            width: 100%;
+            padding: 18px 12px 6px;
+            background-color: #3c4043; /* Darker input background */
+            border: 1px solid #5f6368;
+            border-radius: 4px;
+            color: #e8eaed;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, .custom-select:focus, .date-input:focus {
+            border-color: #8ab4f8; /* Blue focus border */
+            box-shadow: 0 0 0 1px #8ab4f8;
+        }
+
+        label {
+            position: absolute;
+            left: 12px;
+            top: 15px;
+            color: #9aa0a6;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        /* Floating Label Effect */
+        input:focus + label,
+        input:not(:placeholder-shown) + label,
+        .date-input:not(:placeholder-shown) + label,
+        .date-input-year:not(:placeholder-shown) + label,
+        .filled-input label {
+            top: 6px;
+            left: 10px;
+            font-size: 12px;
+        }
+
+        .date-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .date-item {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .custom-select {
+            appearance: none;
+            padding-right: 30px; /* Space for the dropdown arrow */
+        }
+
+        .select-wrapper {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa0a6;
+            pointer-events: none;
+            font-size: 10px;
+        }
+
+        .btn-next {
+            background-color: #8ab4f8;
+            color: #202124;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            float: right;
+            transition: background-color 0.3s;
+        }
+
+        .btn-next:hover {
+            background-color: #a6c5fa;
+        }
+
+        .email-suggestion {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+
+        .email-suggestion input[type="radio"] {
+            margin-right: 12px;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #9aa0a6;
+            border-radius: 50%;
+            position: relative;
+            top: 0;
+        }
+
+        .email-suggestion input[type="radio"]:checked {
+            border-color: #8ab4f8;
+            background-color: #8ab4f8;
+            border-width: 5px; /* Thicker border on check to look like a dot */
+        }
+
+        .custom-email-input {
+            display: flex;
+            align-items: center;
+        }
+        
+        .custom-email-input input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            flex-grow: 1;
+        }
+        
+        .custom-email-suffix {
+            background-color: #3c4043;
+            color: #9aa0a6;
+            padding: 10px 12px;
+            border: 1px solid #5f6368;
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: #9aa0a6;
+            margin-top: -16px;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            background-color: #3c4043;
+            border: 1px solid #5f6368;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div id="step-name">
+            <div class="google-logo">Google</div>
+            <h2>Buat Akun Google</h2>
+            <div class="subtitle">Masukkan nama Anda</div>
+            
+            <form>
+                <div class="name-group">
+                    <div class="input-field">
+                        <input type="text" id="namaDepan" value="Gabriel" placeholder=" " required>
+                        <label for="namaDepan">Nama depan</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="namaBelakang" value="Parh" placeholder=" ">
+                        <label for="namaBelakang">Nama belakang (opsional)</label>
+                    </div>
+                </div>
+                <button type="button" class="btn-next" onclick="showStep('step-basic-info')">Selanjutnya</button>
+            </form>
+        </div>
+        
+        <div id="step-basic-info" style="display: none;">
+            <div class="google-logo">Google</div>
+            <h2>Informasi dasar</h2>
+            <div class="subtitle">Masukkan tanggal lahir dan gender</div>
+            
+            <form>
+                <div class="date-group">
+                    <div class="date-item input-field">
+                        <input type="number" id="hari" class="date-input" placeholder=" " min="1" max="31" required>
+                        <label for="hari">Hari</label>
+                    </div>
+                    
+                    <div class="date-item select-wrapper">
+                        <select id="bulan" class="custom-select" required>
+                            <option value="" disabled selected hidden>Bul...</option>
+                            <option value="Januari">Januari</option>
+                            <option value="Februari">Februari</option>
+                            <option value="Maret">Maret</option>
+                            <option value="April">April</option>
+                            <option value="Mei">Mei</option>
+                            <option value="Juni">Juni</option>
+                            <option value="Juli">Juli</option>
+                            <option value="Agustus">Agustus</option>
+                            <option value="September">September</option>
+                            <option value="Oktober">Oktober</option>
+                            <option value="November">November</option>
+                            <option value="Desember">Desember</option>
+                        </select>
+                    </div>
+                    
+                    <div class="date-item input-field">
+                        <input type="number" id="tahun" class="date-input" placeholder=" " min="1900" max="2025" required>
+                        <label for="tahun">Tahun</label>
+                    </div>
+                </div>
+                
+                <div class="select-wrapper">
+                    <select id="gender" class="custom-select" required>
+                        <option value="" disabled selected hidden>Gender</option>
+                        <option value="Wanita">Wanita</option>
+                        <option value="Pria">Pria</option>
+                        <option value="Tidak ingin memberitahu">Tidak ingin memberitahu</option>
+                        <option value="Kustom">Kustom</option>
+                    </select>
+                </div>
+                
+                <p style="font-size: 14px; color: #9aa0a6;">Alasan kami meminta tanggal lahir dan gender Anda</p>
+                <button type="button" class="btn-next" onclick="showStep('step-email')">Selanjutnya</button>
+            </form>
+        </div>
+        
+        <div id="step-email" style="display: none;">
+            <div class="google-logo">Google</div>
+            <h2>Pilih alamat Gmail Anda</h2>
+            <div class="subtitle">Pilih alamat Gmail atau buat alamat Gmail Anda sendiri</div>
+            
+            <form>
+                <div class="email-suggestion">
+                    <input type="radio" id="gabrielparh7" name="emailOption" value="gabrielparh7@gmail.com">
+                    <label for="gabrielparh7">gabrielparh7@gmail.com</label>
+                </div>
+                <div class="email-suggestion">
+                    <input type="radio" id="parhgabriel" name="emailOption" value="parhgabriel@gmail.com">
+                    <label for="parhgabriel">parhgabriel@gmail.com</label>
+                </div>
+                
+                <div class="email-suggestion">
+                    <input type="radio" id="customEmailRadio" name="emailOption" value="custom" checked>
+                    <label for="customEmailRadio">Buat alamat Gmail Anda sendiri</label>
+                </div>
+                
+                <div class="input-group custom-email-input">
+                    <input type="text" id="customEmail" value="custommail" placeholder=" " required>
+                    <div class="custom-email-suffix">@gmail.com</div>
+                </div>
+                
+                <p style="font-size: 14px; color: #9aa0a6; margin-bottom: 32px;">Anda dapat menggunakan huruf, angka & titik</p>
+                
+                <button type="button" class="btn-next" onclick="showStep('step-password')">Selanjutnya</button>
+            </form>
+        </div>
+        
+        <div id="step-password" style="display: none;">
+            <div class="google-logo">Google</div>
+            <h2>Buat sandi yang kuat</h2>
+            <div class="subtitle">Buat sandi yang kuat dengan campuran huruf, angka, dan simbol</div>
+            
+            <form>
+                <div class="input-field filled-input">
+                    <input type="password" id="password" value="password123#" placeholder=" " required>
+                    <label for="password">Sandi</label>
+                </div>
+                
+                <div class="password-hint">Minimal 8 karakter. Jangan gunakan sandi dari situs lain atau sesuatu yang mudah ditebak seperti nama hewan peliharaan Anda.</div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="tampilkanSandi">
+                    <label for="tampilkanSandi" style="position: static; color: #e8eaed;">Tampilkan sandi</label>
+                </div>
+
+                <button type="submit" class="btn-next">Selanjutnya</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Fungsionalitas sederhana untuk berpindah antar langkah formulir (replika)
+        const steps = ['step-name', 'step-basic-info', 'step-email', 'step-password'];
+        
+        function showStep(stepId) {
+            steps.forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            document.getElementById(stepId).style.display = 'block';
+        }
+
+        // Fungsionalitas Tampilkan Sandi
+        document.getElementById('tampilkanSandi').addEventListener('change', function() {
+            const passwordInput = document.getElementById('password');
+            if (this.checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+        
+        // Fungsionalitas untuk Floating Label pada Select (Hanya di Chrome/Firefox)
+        // Ini adalah trik CSS/JS yang disederhanakan
+        document.getElementById('bulan').addEventListener('change', function() {
+            if(this.value !== "") {
+                this.classList.add('filled-input');
+            } else {
+                this.classList.remove('filled-input');
+            }
+        });
+        document.getElementById('gender').addEventListener('change', function() {
+            if(this.value !== "") {
+                this.classList.add('filled-input');
+            } else {
+                this.classList.remove('filled-input');
+            }
+        });
+    </script>
+</body>
+</html>
